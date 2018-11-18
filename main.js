@@ -7,7 +7,7 @@ let mainWindow
 
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 1024, height: 768})
+  mainWindow = new BrowserWindow({width: 1024, height: 768, show: false})
 
   // and load the index.html of the app.
   mainWindow.loadFile('index.html')
@@ -21,6 +21,10 @@ function createWindow () {
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
     mainWindow = null
+  })
+
+  mainWindow.once('ready-to-show', () => {
+    mainWindow.show()
   })
 }
 

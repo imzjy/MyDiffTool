@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>My Diff</title>
+  <title>My Diff Tools - v0.0.1</title>
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/diff2html.css">
   <style>
@@ -18,7 +18,7 @@
   <div class='container-fluid'>
     <div class="row">
       <div class="col-sm">
-        <h3>My Diff Tools</h3>
+        <h2>My Diff Tools</h2>
       </div>
     </div>
     <div class="row">
@@ -31,7 +31,7 @@
     </div>
     <div class="row">
       <div class="col-sm text-center">
-        <button type="button" class="btn btn-primary btn-sm" id="compare">Compare</button>
+        <button type="button" class="btn btn-primary btn-sm" id="compare" style="margin-bottom: 10px;">Compare</button>
       </div>
     </div>
     <div class="row">
@@ -47,23 +47,34 @@
       </script>
       <script>
         var $ = require('jquery');
-        $("#compare").click(function () {
-          var JsDiff = require('diff');
-          var left = $("#left").val()
-          var right = $("#right").val();
-          
-          console.log(left);
-          $("#display").html("");
+        
+        $(document).ready(() => {
+          console.log('loaded!')
 
-          var unitedDiff = JsDiff.createPatch('index.html', left, right, 'left', 'right', {context: 999});
-          console.log(unitedDiff)
-          
-          let diff2html = require("diff2html").Diff2Html
-          var diffHtml = diff2html.getPrettyHtml(
-            unitedDiff,
-            { inputFormat: 'diff', showFiles: true, matching: 'lines', outputFormat: 'side-by-side' }
-          );
-          $("#display").html(diffHtml);
+          $('#left').val(localStorage.getItem('left')||'');
+          $('#right').val(localStorage.getItem('right')||'');
+
+          $("#compare").click(function () {
+            var JsDiff = require('diff');
+            var left = $("#left").val()
+            var right = $("#right").val();
+
+            localStorage.setItem('left', left);
+            localStorage.setItem('right', right);
+
+            console.log('left:' + left.length + 'right:' + right.length);
+            $("#display").html("");
+
+            var unitedDiff = JsDiff.createPatch('index.html', left, right, 'left', 'right', { context: 999 });
+            console.log(unitedDiff)
+
+            let diff2html = require("diff2html").Diff2Html
+            var diffHtml = diff2html.getPrettyHtml(
+              unitedDiff,
+              { inputFormat: 'diff', showFiles: false, matching: 'lines', outputFormat: 'side-by-side' }
+            );
+            $("#display").html(diffHtml);
+          });
         });
       </script>
 </body>

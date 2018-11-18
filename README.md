@@ -1,2 +1,3 @@
-# My diff tools
+# My Diff Tool
 
+Easy to use diff tool.

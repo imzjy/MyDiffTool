@@ -1,12 +1,17 @@
 {
-  "name": "my-diff-tools",
+  "name": "MyDiffTool",
   "version": "0.0.1",
-  "description": "Diff tools that easy to use.",
+  "license": "MIT",
+  "description": "Diff tool that easy to use.",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "postinstall": "electron-builder install-app-deps",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "release": "yarn compile && electron-builder"
   },
-  "repository": "https://github.com/imzjy/mydifftools",
+  "repository": "https://github.com/imzjy/mydifftool",
   "keywords": [
     "Electron",
     "diff",
@@ -15,9 +20,34 @@
     "text"
   ],
   "author": "Jerry Chou",
-  "license": "CC0-1.0",
+  "build": {
+    "appId": "com.imzjy.mydifftool",
+    "mac": {
+      "category": "public.app-category.productivity"
+    },
+    "nsis": {
+      "createDesktopShortcut": "always"
+    },
+    "dmg": {
+      "contents": [
+        {
+          "x": 110,
+          "y": 150
+        },
+        {
+          "x": 240,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "linux": {
+      "category": "Productivity"
+    }
+  },
   "devDependencies": {
-    "electron": "^3.0.4"
+    "electron": "^3.0.9"
   },
   "dependencies": {
     "diff": "^3.5.0",

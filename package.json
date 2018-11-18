@@ -1,0 +1,27 @@
+{
+  "name": "my-diff-tools",
+  "version": "0.0.1",
+  "description": "Diff tools that easy to use.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "https://github.com/imzjy/mydifftools",
+  "keywords": [
+    "Electron",
+    "diff",
+    "tools",
+    "compare",
+    "text"
+  ],
+  "author": "Jerry Chou",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "electron": "^3.0.4"
+  },
+  "dependencies": {
+    "diff": "^3.5.0",
+    "diff2html": "^2.5.0",
+    "jquery": "^3.3.1"
+  }
+}

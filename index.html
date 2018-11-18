@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>My Diff</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/diff2html.css">
+  <style>
+    textarea {
+        width: 100%;
+        height: 420px;
+      }
+    </style>
+</head>
+
+<body>
+  <div class='container-fluid'>
+    <div class="row">
+      <div class="col-sm">
+        <h1>My Diff Tools</h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm">
+        <textarea width="100%" id="left"></textarea>
+      </div>
+      <div class="col-sm">
+        <textarea width="100%" id="right"></textarea>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm">
+        <button type="button" class="btn btn-primary" id="compare">Compare</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm">
+        <div id="display">
+        </div>
+      </div>
+    </div>
+    <div>
+      <script>
+        // You can also require other files to run in this process
+        require('./renderer.js')
+      </script>
+      <script>
+        var $ = require('jquery');
+        $("#compare").click(function () {
+          var JsDiff = require('diff');
+          var left = $("#left").val()
+          var right = $("#right").val();
+          
+          console.log(left);
+          $("#display").html("");
+
+          // var color = '',
+          // span = null,
+          // diff = JsDiff.diffTrimmedLines(left, right),
+          // display = document.getElementById('display'),
+          // fragment = document.createDocumentFragment();
+
+          // diff.forEach(function (part) {
+          //   // green for additions, red for deletions
+          //   // grey for common parts
+          //   color = part.added ? 'darkgreen' :
+          //     part.removed ? 'red' : 'grey';
+          //   span = document.createElement('span');
+          //   span.style.color = color;
+          //   span.appendChild(document
+          //     .createTextNode(part.value));
+          //   fragment.appendChild(span);
+          // });
+
+          //display.appendChild(fragment);
+
+          var unitedDiff = JsDiff.createPatch('index.html', left, right, 'left', 'right');
+          console.log(unitedDiff)
+          
+          let diff2html = require("diff2html").Diff2Html
+          var diffHtml = diff2html.getPrettyHtml(
+            unitedDiff,
+            { inputFormat: 'diff', showFiles: true, matching: 'lines', outputFormat: 'side-by-side' }
+          );
+          $("#display").html(diffHtml);
+        });
+      </script>
+</body>
+</html>

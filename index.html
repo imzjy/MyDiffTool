@@ -9,7 +9,7 @@
   <style>
     textarea {
         width: 100%;
-        height: 420px;
+        height: 320px;
       }
     </style>
 </head>
@@ -18,7 +18,7 @@
   <div class='container-fluid'>
     <div class="row">
       <div class="col-sm">
-        <h1>My Diff Tools</h1>
+        <h3>My Diff Tools</h3>
       </div>
     </div>
     <div class="row">
@@ -30,8 +30,8 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-sm">
-        <button type="button" class="btn btn-primary" id="compare">Compare</button>
+      <div class="col-sm text-center">
+        <button type="button" class="btn btn-primary btn-sm" id="compare">Compare</button>
       </div>
     </div>
     <div class="row">
@@ -55,27 +55,7 @@
           console.log(left);
           $("#display").html("");
 
-          // var color = '',
-          // span = null,
-          // diff = JsDiff.diffTrimmedLines(left, right),
-          // display = document.getElementById('display'),
-          // fragment = document.createDocumentFragment();
-
-          // diff.forEach(function (part) {
-          //   // green for additions, red for deletions
-          //   // grey for common parts
-          //   color = part.added ? 'darkgreen' :
-          //     part.removed ? 'red' : 'grey';
-          //   span = document.createElement('span');
-          //   span.style.color = color;
-          //   span.appendChild(document
-          //     .createTextNode(part.value));
-          //   fragment.appendChild(span);
-          // });
-
-          //display.appendChild(fragment);
-
-          var unitedDiff = JsDiff.createPatch('index.html', left, right, 'left', 'right');
+          var unitedDiff = JsDiff.createPatch('index.html', left, right, 'left', 'right', {context: 999});
           console.log(unitedDiff)
           
           let diff2html = require("diff2html").Diff2Html

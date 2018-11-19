@@ -47,6 +47,10 @@
       </script>
       <script>
         var $ = require('jquery');
+        var _ = require('underscore');
+        var JsDiff = require('diff');
+        var { Diff2Html } = require("diff2html");
+
         
         $(document).ready(() => {
           console.log('loaded!')
@@ -54,22 +58,30 @@
           $('#left').val(localStorage.getItem('left')||'');
           $('#right').val(localStorage.getItem('right')||'');
 
+          $('#left').keyup(_.debounce(() => {
+            console.log("left saved at" + new Date())
+            localStorage.setItem('left', $("#left").val());
+          }, 500));
+
+          $('#right').keyup(_.debounce(() => {
+            console.log("right saved at" + new Date())
+            localStorage.setItem('right', $("#right").val());
+          }, 500));
+
+
           $("#compare").click(function () {
-            var JsDiff = require('diff');
             var left = $("#left").val()
             var right = $("#right").val();
+            
 
-            localStorage.setItem('left', left);
-            localStorage.setItem('right', right);
-
-            console.log('left:' + left.length + 'right:' + right.length);
+            console.log('left:' + left.length + '  right:' + right.length);
             $("#display").html("");
 
             var unitedDiff = JsDiff.createPatch('index.html', left, right, 'left', 'right', { context: 999 });
             console.log(unitedDiff)
 
-            let diff2html = require("diff2html").Diff2Html
-            var diffHtml = diff2html.getPrettyHtml(
+            
+            var diffHtml = Diff2Html.getPrettyHtml(
               unitedDiff,
               { inputFormat: 'diff', showFiles: false, matching: 'lines', outputFormat: 'side-by-side' }
             );

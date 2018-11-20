@@ -8,9 +8,12 @@
   <link rel="stylesheet" href="css/diff2html.css">
   <style>
     textarea {
-        width: 100%;
-        height: 320px;
-      }
+      width: 100%;
+      height: 320px;
+    }
+    .options {
+      margin-bottom: 5px;
+    }
     </style>
 </head>
 
@@ -31,8 +34,16 @@
     </div>
     <div class="row">
       <div class="col-sm">
-          <input type="checkbox" id="sort" name="sort">
-          <label for="sort">Sort before compare</label>
+        <div class="options">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="ignore_case" name="ignore_case">
+            <label class="form-check-label" for="ignore_case">Ignore case</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="sort" name="sort">
+            <label class="form-check-label" for="sort">Sort before compare</label>
+          </div>
+        </div>
       </div>
     </div>
     <div class="row">
@@ -67,6 +78,8 @@
           $('#right').val(localStorage.getItem('right')||'');
 
           $('#sort').prop('checked',  localStorage.getItem('sort')==="true"||false);
+          $('#ignore_case').prop('checked',  localStorage.getItem('ignore_case')==="true"||false);
+
         }
 
         function bind_auto_save() {
@@ -84,6 +97,11 @@
             var is_sort = $('#sort').prop('checked');
             localStorage.setItem('sort', is_sort);
           });
+
+          $('#ignore_case').change(() => {
+            var ignore_case = $('#ignore_case').prop('checked');
+            localStorage.setItem('ignore_case', ignore_case);
+          });
         }
 
         function do_compare() {
@@ -99,10 +117,12 @@
             $("#right").val(right);
           }
 
+          var ignore_case = $('#ignore_case').prop('checked');
+
           console.log('left:' + left.length + '  right:' + right.length);
           $("#display").html("");
 
-          var unitedDiff = JsDiff.createPatch('index.html', left, right, 'left', 'right', { context: 999 });
+          var unitedDiff = JsDiff.createPatch('', left, right, '', '', { context: 999, ignoreCase: ignore_case });
           console.log(unitedDiff)
 
           

@@ -65,6 +65,8 @@
         function restore_last_editing() {
           $('#left').val(localStorage.getItem('left')||'');
           $('#right').val(localStorage.getItem('right')||'');
+
+          $('#sort').prop('checked',  localStorage.getItem('sort')==="true"||false);
         }
 
         function bind_auto_save() {
@@ -77,6 +79,11 @@
             console.log("right saved at" + new Date())
             localStorage.setItem('right', $("#right").val());
           }, 500));
+
+          $('#sort').change(() => {
+            var is_sort = $('#sort').prop('checked');
+            localStorage.setItem('sort', is_sort);
+          });
         }
 
         function do_compare() {
@@ -91,7 +98,6 @@
             right = sort_lines(right);
             $("#right").val(right);
           }
-          
 
           console.log('left:' + left.length + '  right:' + right.length);
           $("#display").html("");

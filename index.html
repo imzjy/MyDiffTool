@@ -62,12 +62,12 @@
          return org_string.split('\n').sort().join('\n');
         }
 
-        $(document).ready(() => {
-          console.log('loaded!')
-
+        function restore_last_editing() {
           $('#left').val(localStorage.getItem('left')||'');
           $('#right').val(localStorage.getItem('right')||'');
+        }
 
+        function bind_auto_save() {
           $('#left').keyup(_.debounce(() => {
             console.log("left saved at" + new Date())
             localStorage.setItem('left', $("#left").val());
@@ -77,35 +77,43 @@
             console.log("right saved at" + new Date())
             localStorage.setItem('right', $("#right").val());
           }, 500));
+        }
 
+        function do_compare() {
+          var left = $("#left").val()
+          var right = $("#right").val();
 
-          $("#compare").click(function () {
-            var left = $("#left").val()
-            var right = $("#right").val();
+          var is_sort = $('#sort').prop('checked');
+          if (is_sort) {
+            left = sort_lines(left);
+            $("#left").val(left);
 
-            var is_sort = $('#sort').prop('checked');
-            if (is_sort) {
-              left = sort_lines(left);
-              $("#left").val(left);
+            right = sort_lines(right);
+            $("#right").val(right);
+          }
+          
 
-              right = sort_lines(right);
-              $("#right").val(left);
-            }
-            
+          console.log('left:' + left.length + '  right:' + right.length);
+          $("#display").html("");
 
-            console.log('left:' + left.length + '  right:' + right.length);
-            $("#display").html("");
+          var unitedDiff = JsDiff.createPatch('index.html', left, right, 'left', 'right', { context: 999 });
+          console.log(unitedDiff)
 
-            var unitedDiff = JsDiff.createPatch('index.html', left, right, 'left', 'right', { context: 999 });
-            console.log(unitedDiff)
+          
+          var diffHtml = Diff2Html.getPrettyHtml(
+            unitedDiff,
+            { inputFormat: 'diff', showFiles: false, matching: 'lines', outputFormat: 'side-by-side' }
+          );
+          $("#display").html(diffHtml);
+        }
 
-            
-            var diffHtml = Diff2Html.getPrettyHtml(
-              unitedDiff,
-              { inputFormat: 'diff', showFiles: false, matching: 'lines', outputFormat: 'side-by-side' }
-            );
-            $("#display").html(diffHtml);
-          });
+        $(document).ready(() => {
+          console.log('loaded!')
+
+          bind_auto_save();
+          restore_last_editing();
+
+          $("#compare").click(do_compare);
         });
       </script>
 </body>

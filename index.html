@@ -130,11 +130,43 @@
           $("#display").html(diffHtml);
         }
 
+        function sync_editor_resize(src, dest) {
+          var src_time_id = null;
+          var dest_time_id = null;
+          var fps = 1000/30;
+
+          src.mousedown(function() {
+              src_time_id = setInterval(() => {
+                dest.outerHeight(src.outerHeight());
+              }, fps);
+          });
+
+          dest.mousedown(function() {
+              dest_time_id = setInterval(() => {
+                src.outerHeight(dest.outerHeight());
+              }, fps);
+          });
+
+
+          $(window).mouseup(function() {
+              if(src_time_id !== null){
+                clearInterval(src_time_id);
+              }
+              if(dest_time_id !== null){
+                clearInterval(dest_time_id);
+              }
+
+              //sync to elimiate very small hight diff
+              src.outerHeight(dest.outerHeight());
+          });
+        };
+
         $(document).ready(() => {
           console.log('loaded!')
 
           bind_auto_save();
           restore_last_editing();
+          sync_editor_resize($("#left"), $("#right"));
 
           $("#compare").click(do_compare);
         });

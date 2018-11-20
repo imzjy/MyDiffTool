@@ -1,6 +1,6 @@
 {
   "name": "MyDiffTool",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "license": "MIT",
   "description": "Diff tool that easy to use.",
   "main": "main.js",
@@ -53,6 +53,7 @@
   "dependencies": {
     "diff": "^3.5.0",
     "diff2html": "^2.5.0",
+    "electron-editor-context-menu": "^1.1.1",
     "jquery": "^3.3.1",
     "underscore": "^1.9.1"
   }

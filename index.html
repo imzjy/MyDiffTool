@@ -30,6 +30,12 @@
       </div>
     </div>
     <div class="row">
+      <div class="col-sm">
+          <input type="checkbox" id="sort" name="sort">
+          <label for="sort">Sort before compare</label>
+      </div>
+    </div>
+    <div class="row">
       <div class="col-sm text-center">
         <button type="button" class="btn btn-primary btn-block" id="compare" style="margin-bottom: 10px;">Compare</button>
       </div>
@@ -52,6 +58,10 @@
         var { Diff2Html } = require("diff2html");
 
         
+        function sort_lines(org_string) {
+         return org_string.split('\n').sort().join('\n');
+        }
+
         $(document).ready(() => {
           console.log('loaded!')
 
@@ -72,6 +82,15 @@
           $("#compare").click(function () {
             var left = $("#left").val()
             var right = $("#right").val();
+
+            var is_sort = $('#sort').prop('checked');
+            if (is_sort) {
+              left = sort_lines(left);
+              $("#left").val(left);
+
+              right = sort_lines(right);
+              $("#right").val(left);
+            }
             
 
             console.log('left:' + left.length + '  right:' + right.length);

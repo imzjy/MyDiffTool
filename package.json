@@ -1,6 +1,6 @@
 {
   "name": "MyDiffTool",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "license": "MIT",
   "description": "Diff tool that easy to use.",
   "main": "main.js",

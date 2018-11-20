@@ -74,12 +74,13 @@
         }
 
         function restore_last_editing() {
+          console.log(new Date())
           $('#left').val(localStorage.getItem('left')||'');
           $('#right').val(localStorage.getItem('right')||'');
 
           $('#sort').prop('checked',  localStorage.getItem('sort')==="true"||false);
           $('#ignore_case').prop('checked',  localStorage.getItem('ignore_case')==="true"||false);
-
+          console.log(new Date())
         }
 
         function bind_auto_save() {

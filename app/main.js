@@ -1,5 +1,6 @@
 // Modules to control application life and create native browser window
 const {app, BrowserWindow, Menu} = require('electron')
+const path = require('path')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -10,7 +11,7 @@ function createWindow () {
   mainWindow = new BrowserWindow({width: 1024, height: 768, show: false})
 
   // and load the index.html of the app.
-  mainWindow.loadFile('index.html')
+  mainWindow.loadFile(path.join(__dirname,'index.html'))
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()

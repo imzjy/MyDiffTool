@@ -3,15 +3,15 @@
   "version": "1.0.0",
   "license": "MIT",
   "description": "Diff tool that easy to use.",
-  "main": "main.js",
+  "main": "app/main.js",
   "scripts": {
     "start": "electron .",
     "postinstall": "electron-builder install-app-deps",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
-    "release": "yarn compile && electron-builder"
+    "release": "electron-builder"
   },
-  "repository": "https://github.com/imzjy/mydifftool",
+  "repository": "https://github.com/imzjy/MyDiffTool",
   "keywords": [
     "Electron",
     "diff",

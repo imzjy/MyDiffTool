@@ -7,9 +7,7 @@
   "scripts": {
     "start": "electron .",
     "postinstall": "electron-builder install-app-deps",
-    "pack": "electron-builder --dir",
-    "dist": "electron-builder",
-    "release": "electron-builder"
+    "dist": "electron-builder --win --mac"
   },
   "repository": "https://github.com/imzjy/MyDiffTool",
   "keywords": [

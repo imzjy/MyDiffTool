@@ -14,6 +14,6 @@ install:
 	${NPM} install
 
 pack:
-	rm -rf dist/
+	rm -rf ${DIST}/
 	${NPM} dist
 

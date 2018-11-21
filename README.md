@@ -15,9 +15,11 @@ If you looking for the tool that comparing two of text snippets, that is MyDiff 
 
 # Install
 
+## Download the binary
+
 Download the binary from [releases](https://github.com/imzjy/MyDiffTool/releases)
 
-# Build from source
+## Build from source
 
 1. git clone https://github.com/imzjy/MyDiffTool.git
 2. make install

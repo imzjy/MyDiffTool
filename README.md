@@ -22,3 +22,7 @@ Download the binary from [releases](https://github.com/imzjy/MyDiffTool/releases
 1. git clone https://github.com/imzjy/MyDiffTool.git
 2. make install
 3. make pack
+
+# Report bug
+
+Please file issue at [issues](https://github.com/imzjy/MyDiffTool/issues/new)

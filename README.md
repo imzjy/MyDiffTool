@@ -1,6 +1,6 @@
 # My Diff Tool
 
-If your looking for the tool that comparing two of text snippets, that is MyDiff Tool.
+If you looking for the tool that comparing two of text snippets, that is MyDiff Tool.
 
 # Screenshots
 

@@ -11,7 +11,8 @@ If you looking for the tool that comparing two of text snippets, that is MyDiff 
 - Easy to use
 - Out of box
 - Cross platform
-- Option to ignore case, sort before compare.
+- Option to ignore case, sort before compare
+- Automatically save your options and contents
 
 # Install
 

@@ -4,7 +4,7 @@ If your looking for the tool that comparing two of text snippets, that is MyDiff
 
 # Screenshots
 
-![MyDiffTool Demo](screenshot/MyDiffTool_Demo.gif?raw=true "MyDiffTool Demo")
+![MyDiffTool Demo](screenshots/MyDiffTool_Demo.gif?raw=true "MyDiffTool Demo")
 
 # Features
 

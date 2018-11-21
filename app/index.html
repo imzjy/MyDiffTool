@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>My Diff Tool - v0.0.1</title>
+  <title>My Diff Tool</title>
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/diff2html.css">
   <style>
@@ -162,9 +162,15 @@
           });
         };
 
+        function set_app_title(){
+          var appVersion = require('electron').remote.app.getVersion();
+          document.title = 'My Diff Tool - v' + appVersion;
+        }
+
         $(document).ready(() => {
           console.log('loaded!')
 
+          set_app_title();
           bind_auto_save();
           restore_last_editing();
           sync_editor_resize($("#left"), $("#right"));

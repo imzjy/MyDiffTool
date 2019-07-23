@@ -1,11 +1,12 @@
 DIST    := dist
-NPM		:= yarn
+NPM	:= yarn
 
 default:
 	@echo "make what?"
 	@echo "  start    #start the app"
 	@echo "  install  #install npm package development"
-	@echo "  pack     #pack to MyDiffTool.app"
+	@echo "  pack_mac #pack to MyDiffTool.app for MacOS"
+	@echo "  pack_win #pack to MyDiffTool.exe for Windows"
 
 start:
 	${NPM} start
@@ -13,7 +14,11 @@ start:
 install:
 	${NPM} install
 
-pack:
+pack_win:
 	rm -rf ${DIST}/
-	${NPM} dist
+	${NPM} dist-win
+
+pack_mac:
+	rm -rf ${DIST}/
+	${NPM} dist-mac
 

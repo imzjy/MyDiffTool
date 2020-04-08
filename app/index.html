@@ -11,10 +11,11 @@
       width: 100%;
       height: 320px;
     }
+
     .options {
       margin-bottom: 5px;
     }
-    </style>
+  </style>
 </head>
 
 <body>
@@ -63,23 +64,32 @@
         require('./renderer.js')
       </script>
       <script>
-        var $ = require('jquery');
-        var _ = require('lodash');
-        var JsDiff = require('diff');
-        var { Diff2Html } = require("diff2html");
+        const $ = require('jquery');
+        const _ = require('lodash');
+        const JsDiff = require('diff');
+        const Diff2html = require('diff2html');
 
-        
-        function sort_lines(org_string) {
-         return org_string.split('\n').sort().join('\n');
+        function sort_lines(org_string, ignore_case) {
+          return org_string.split('\n').sort(
+            function (a, b) {
+              if (ignore_case) {
+                a = a.toLowerCase();
+                b = b.toLowerCase();
+              }
+              if (a < b) return -1;
+              if (a > b) return 1;
+              return 0;
+            }
+          ).join('\n');
         }
 
         function restore_last_editing() {
           console.log(new Date())
-          $('#left').val(localStorage.getItem('left')||'');
-          $('#right').val(localStorage.getItem('right')||'');
+          $('#left').val(localStorage.getItem('left') || '');
+          $('#right').val(localStorage.getItem('right') || '');
 
-          $('#sort').prop('checked',  localStorage.getItem('sort')==="true"||false);
-          $('#ignore_case').prop('checked',  localStorage.getItem('ignore_case')==="true"||false);
+          $('#sort').prop('checked', localStorage.getItem('sort') === "true" || false);
+          $('#ignore_case').prop('checked', localStorage.getItem('ignore_case') === "true" || false);
           console.log(new Date())
         }
 
@@ -109,13 +119,13 @@
           var left = $("#left").val()
           var right = $("#right").val();
 
-          var is_sort = $('#sort').prop('checked');
-          if (is_sort) {
-            left = sort_lines(left);
-            right = sort_lines(right);
-          }
-
           var ignore_case = $('#ignore_case').prop('checked');
+          var is_sort = $('#sort').prop('checked');
+
+          if (is_sort) {
+            left = sort_lines(left, ignore_case);
+            right = sort_lines(right, ignore_case);
+          }
 
           console.log('left:' + left.length + '  right:' + right.length);
           $("#display").html("");
@@ -123,10 +133,11 @@
           var unitedDiff = JsDiff.createPatch('', left, right, '', '', { context: 999, ignoreCase: ignore_case });
           console.log(unitedDiff)
 
-          
-          var diffHtml = Diff2Html.getPrettyHtml(
-            unitedDiff,
-            { inputFormat: 'diff', showFiles: false, matching: 'lines', outputFormat: 'side-by-side' }
+
+          const diffJson = Diff2html.parse(unitedDiff);
+          const diffHtml = Diff2html.html(
+            diffJson,
+            { drawFileList: false, matching: 'lines', outputFormat: 'side-by-side' }
           );
           $("#display").html(diffHtml);
         }
@@ -134,35 +145,35 @@
         function sync_editor_resize(src, dest) {
           var src_time_id = null;
           var dest_time_id = null;
-          var fps = 1000/30;
+          var fps = 1000 / 30;
 
-          src.mousedown(function() {
-              src_time_id = setInterval(() => {
-                dest.outerHeight(src.outerHeight());
-              }, fps);
+          src.mousedown(function () {
+            src_time_id = setInterval(() => {
+              dest.outerHeight(src.outerHeight());
+            }, fps);
           });
 
-          dest.mousedown(function() {
-              dest_time_id = setInterval(() => {
-                src.outerHeight(dest.outerHeight());
-              }, fps);
-          });
-
-
-          $(window).mouseup(function() {
-              if(src_time_id !== null){
-                clearInterval(src_time_id);
-              }
-              if(dest_time_id !== null){
-                clearInterval(dest_time_id);
-              }
-
-              //sync to elimiate very small hight diff
+          dest.mousedown(function () {
+            dest_time_id = setInterval(() => {
               src.outerHeight(dest.outerHeight());
+            }, fps);
+          });
+
+
+          $(window).mouseup(function () {
+            if (src_time_id !== null) {
+              clearInterval(src_time_id);
+            }
+            if (dest_time_id !== null) {
+              clearInterval(dest_time_id);
+            }
+
+            //sync to elimiate very small hight diff
+            src.outerHeight(dest.outerHeight());
           });
         };
 
-        function set_app_title(){
+        function set_app_title() {
           var appVersion = require('electron').remote.app.getVersion();
           document.title = 'My Diff Tool - v' + appVersion;
         }
@@ -179,4 +190,5 @@
         });
       </script>
 </body>
+
 </html>

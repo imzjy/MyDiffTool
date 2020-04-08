@@ -1,6 +1,6 @@
 {
   "name": "MyDiffTool",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MIT",
   "description": "Diff tool that easy to use.",
   "main": "app/main.js",
@@ -46,14 +46,14 @@
     }
   },
   "devDependencies": {
-    "electron": "^3.0.9",
-    "electron-builder": "^20.36.2"
+    "electron": "^8.2.1",
+    "electron-builder": "^22.4.1"
   },
   "dependencies": {
-    "diff": "^3.5.0",
-    "diff2html": "^2.5.0",
+    "diff": "^4.0.2",
+    "diff2html": "^3.1.6",
     "electron-editor-context-menu": "^1.1.1",
-    "jquery": "^3.4.0",
-    "underscore": "^1.9.1"
+    "jquery": "^3.4.1",
+    "lodash": "^4.17.15"
   }
 }

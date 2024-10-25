@@ -22,7 +22,18 @@
   "build": {
     "appId": "com.imzjy.mydifftool",
     "mac": {
-      "category": "public.app-category.productivity"
+      "category": "public.app-category.productivity",
+      "target": [
+        "dmg",
+        "zip",
+        {
+          "target": "default",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ]
     },
     "nsis": {
       "createDesktopShortcut": "always"

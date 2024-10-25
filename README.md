@@ -26,6 +26,15 @@ Download the binary from [releases](https://github.com/imzjy/MyDiffTool/releases
 2. make install
 3. make pack
 
+## Running on Apple Silicon
+
+To run the application on Apple Silicon without Rosetta, follow these steps:
+
+1. Ensure you have the latest version of Node.js installed.
+2. Install the dependencies using `yarn install`.
+3. Build the application using `make pack_mac_arm64`.
+4. Run the application using the generated binary.
+
 # Report bug
 
 Please file issue at [issues](https://github.com/imzjy/MyDiffTool/issues/new)

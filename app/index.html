@@ -6,13 +6,9 @@
   <title>My Diff Tool</title>
   <!-- Replace local CSS with CDN links -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/diff2html/bundles/css/diff2html.min.css"> -->
-  <!-- CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
-  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/diff2html/bundles/css/diff2html.min.css" />
+  <link rel="stylesheet" type="text/css"
+    href="https://cdn.jsdelivr.net/npm/diff2html@3.4.51/bundles/css/diff2html.min.css" />
 
-  <!-- Javascripts -->
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/diff2html/bundles/js/diff2html-ui.min.js"></script>
   <style>
     textarea {
       width: 100%;
@@ -68,11 +64,10 @@
     </div>
   </div>
 
-  <!-- Replace require() with CDN scripts -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jsdiff/5.0.0/diff.min.js"></script>
-  <!-- <script src="https://cdn.jsdelivr.net/npm/diff2html@3.4.35/bundles/js/diff2html-ui.min.js"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/diff@5.0.0/dist/diff.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/diff2html/bundles/js/diff2html-ui.min.js"></script>
 
   <script>
     function sort_lines(org_string, ignore_case) {
@@ -139,14 +134,8 @@
       var unitedDiff = Diff.createPatch('', left, right, '', '', { context: 999, ignoreCase: ignore_case });
       console.log(unitedDiff)
 
-      // const diffJson = Diff2html.parse(unitedDiff);
-      // const diffHtml = Diff2html.html(
-      //   diffJson,
-      //   { drawFileList: false, matching: 'lines', outputFormat: 'side-by-side' }
-      // );
-
       const targetElement = document.getElementById('display');
-      const configuration = { drawFileList: true, matching: 'lines' };
+      const configuration = { drawFileList: true, matching: 'lines', outputFormat: 'side-by-side' };
 
       const diff2htmlUi = new Diff2HtmlUI(targetElement, unitedDiff, configuration);
       diff2htmlUi.draw();

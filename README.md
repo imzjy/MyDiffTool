@@ -2,6 +2,13 @@
 
 If you looking for the tool that comparing two of text snippets, that is MyDiffTool.
 
+* Online
+  * https://diff.qingfw.com
+  * source code available at [feature/web](https://github.com/imzjy/MyDiffTool/tree/feature/web)
+  * PWA enabled, can be installed on Chrome, so it can be used offline.
+* Offline App
+  * Download the binary from [releases](https://github.com/imzjy/MyDiffTool/releases)
+
 # Screenshots
 
 ![MyDiffTool Demo](screenshots/MyDiffTool_Demo.gif?raw=true "MyDiffTool Demo")

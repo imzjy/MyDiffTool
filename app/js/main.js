@@ -1,136 +1,109 @@
 function sort_lines(org_string, ignore_case) {
   return org_string
     .split("\n")
-    .sort(function (a, b) {
-      if (ignore_case) {
-        a = a.toLowerCase();
-        b = b.toLowerCase();
-      }
-      if (a < b) return -1;
-      if (a > b) return 1;
-      return 0;
+    .sort((a, b) => {
+      const x = ignore_case ? a.toLowerCase() : a;
+      const y = ignore_case ? b.toLowerCase() : b;
+      return x.localeCompare(y);
     })
     .join("\n");
 }
 
 function restore_last_editing() {
-  $("#left").val(localStorage.getItem("left") || "");
-  $("#right").val(localStorage.getItem("right") || "");
+  const fields = ["left", "right"];
+  const checkboxes = ["sort", "ignore_case", "single_column_view"];
 
-  $("#sort").prop("checked", localStorage.getItem("sort") === "true" || false);
-  $("#ignore_case").prop(
-    "checked",
-    localStorage.getItem("ignore_case") === "true" || false
-  );
-  $("#single_column_view").prop(
-    "checked",
-    localStorage.getItem("single_column_view") === "true" || false
-  );
+  fields.forEach((field) => {
+    $(`#${field}`).val(localStorage.getItem(field) || "");
+  });
+
+  checkboxes.forEach((checkbox) => {
+    $(`#${checkbox}`).prop(
+      "checked",
+      localStorage.getItem(checkbox) === "true"
+    );
+  });
 }
 
-function bind_auto_save() {
-  $("#left").keyup(
-    _.debounce(() => {
-      console.log("left saved at" + new Date());
-      localStorage.setItem("left", $("#left").val());
-    }, 500)
-  );
-
-  $("#right").keyup(
-    _.debounce(() => {
-      console.log("right saved at" + new Date());
-      localStorage.setItem("right", $("#right").val());
-    }, 500)
-  );
-
-  $("#sort").change(() => {
-    var is_sort = $("#sort").prop("checked");
-    localStorage.setItem("sort", is_sort);
-    do_compare();
+function setup_auto_save() {
+  // Handle text inputs
+  ["left", "right"].forEach((id) => {
+    $(`#${id}`).keyup(
+      _.debounce(() => {
+        console.log(`${id} saved at ${new Date()}`);
+        localStorage.setItem(id, $(`#${id}`).val());
+      }, 500)
+    );
   });
 
-  $("#ignore_case").change(() => {
-    var ignore_case = $("#ignore_case").prop("checked");
-    localStorage.setItem("ignore_case", ignore_case);
-    do_compare();
-  });
-
-  $("#single_column_view").change(() => {
-    var single_column_view = $("#single_column_view").prop("checked");
-    localStorage.setItem("single_column_view", single_column_view);
-    // Trigger comparison when view mode changes
-    do_compare();
+  // Handle checkboxes
+  ["sort", "ignore_case", "single_column_view"].forEach((id) => {
+    $(`#${id}`).change(() => {
+      const value = $(`#${id}`).prop("checked");
+      localStorage.setItem(id, value);
+      do_compare();
+    });
   });
 }
 
 function do_compare() {
-  var left = $("#left").val();
-  var right = $("#right").val();
+  const left = $("#left").val();
+  const right = $("#right").val();
+  const ignore_case = $("#ignore_case").prop("checked");
+  const is_sort = $("#sort").prop("checked");
+  const single_column = $("#single_column_view").prop("checked");
 
-  var ignore_case = $("#ignore_case").prop("checked");
-  var is_sort = $("#sort").prop("checked");
-  var single_column = $("#single_column_view").prop("checked");
+  const processedLeft = is_sort ? sort_lines(left, ignore_case) : left;
+  const processedRight = is_sort ? sort_lines(right, ignore_case) : right;
 
-  if (is_sort) {
-    left = sort_lines(left, ignore_case);
-    right = sort_lines(right, ignore_case);
-  }
-
-  // console.log('left:' + left.length + '  right:' + right.length);
-
-  var unitedDiff = Diff.createPatch("", left, right, "", "", {
-    context: 9999,
-    ignoreCase: ignore_case,
-  });
+  const unitedDiff = Diff.createPatch(
+    "",
+    processedLeft,
+    processedRight,
+    "",
+    "",
+    {
+      context: 9999,
+      ignoreCase: ignore_case,
+    }
+  );
   console.log(unitedDiff);
 
-  const targetElement = document.getElementById("display");
-  const configuration = {
+  new Diff2HtmlUI(document.getElementById("display"), unitedDiff, {
     drawFileList: false,
     matching: "lines",
     outputFormat: single_column ? "line-by-line" : "side-by-side",
-  };
-
-  const diff2htmlUi = new Diff2HtmlUI(targetElement, unitedDiff, configuration);
-  diff2htmlUi.draw();
-
-  //$("#display").html(diffHtml);
+  }).draw();
 }
 
-function sync_input_textarea_height_if_resize(src, dest) {
-  var src_time_id = null;
-  var dest_time_id = null;
-  var fps = 1000 / 30;
+function sync_input_textarea_if_height_resize(src, dest) {
+  let activeInterval = null;
 
-  src.mousedown(function () {
-    src_time_id = setInterval(() => {
-      dest.outerHeight(src.outerHeight());
-    }, fps);
+  function syncHeight(source, target) {
+    target.outerHeight(source.outerHeight());
+  }
+
+  src.mousedown(() => {
+    activeInterval = setInterval(() => syncHeight(src, dest), 33);
   });
 
-  dest.mousedown(function () {
-    dest_time_id = setInterval(() => {
-      src.outerHeight(dest.outerHeight());
-    }, fps);
+  dest.mousedown(() => {
+    activeInterval = setInterval(() => syncHeight(dest, src), 33);
   });
 
-  $(window).mouseup(function () {
-    if (src_time_id !== null) {
-      clearInterval(src_time_id);
+  $(window).mouseup(() => {
+    if (activeInterval) {
+      clearInterval(activeInterval);
+      activeInterval = null;
     }
-    if (dest_time_id !== null) {
-      clearInterval(dest_time_id);
-    }
-
-    //sync to elimiate very small hight diff
-    src.outerHeight(dest.outerHeight());
+    syncHeight(dest, src); // Final sync
   });
 }
 
 $(document).ready(() => {
-  bind_auto_save();
+  setup_auto_save();
   restore_last_editing();
-  sync_input_textarea_height_if_resize($("#left"), $("#right"));
+  sync_input_textarea_if_height_resize($("#left"), $("#right"));
 
   $("#compare").click(do_compare);
 });

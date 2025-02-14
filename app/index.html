@@ -7,7 +7,7 @@
   <meta name="theme-color" content="#007bff">
   <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
   <link rel="manifest" href="manifest.json">
-  <title>My Diff Tool - v.1.0.0</title>
+  <title>My Diff Tool</title>
   <link href="css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="css/diff2html.min.css" />
 
@@ -27,7 +27,7 @@
   <div class='container-fluid'>
     <div class="row">
       <div class="col-sm">
-        <h2>My Diff Tool</h2>
+        <h2>My Diff Tool <small class="text-muted fs-6">v1.0.1</small></h2>
       </div>
     </div>
     <div class="row">
@@ -82,50 +82,6 @@
     </div>
   </div>
 
-  <script>
-    // Register service worker for PWA support
-    if ('serviceWorker' in navigator) {
-      let refreshing = false;
-
-      // Handle service worker updates
-      navigator.serviceWorker.addEventListener('controllerchange', () => {
-        if (!refreshing) {
-          refreshing = true;
-          window.location.reload();
-        }
-      });
-
-      // Listen for messages from service worker
-      navigator.serviceWorker.addEventListener('message', (event) => {
-        if (event.data.type === 'SW_ACTIVATED') {
-          console.log('New version activated:', event.data.version);
-          const toast = new bootstrap.Toast(document.getElementById('updateToast'));
-          toast.show();
-        }
-      });
-
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js')
-          .then(registration => {
-            console.log('ServiceWorker registration successful');
-
-            // Check for updates
-            registration.addEventListener('updatefound', () => {
-              const newWorker = registration.installing;
-              newWorker.addEventListener('statechange', () => {
-                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                  const toast = new bootstrap.Toast(document.getElementById('updateToast'));
-                  toast.show();
-                }
-              });
-            });
-          })
-          .catch(err => {
-            console.log('ServiceWorker registration failed: ', err);
-          });
-      });
-    }
-  </script>
   <script type="text/javascript" src="js/jquery.min.js"></script>
   <script type="text/javascript" src="js/lodash.min.js"></script>
   <script type="text/javascript" src="js/diff.min.js"></script>

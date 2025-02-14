@@ -101,7 +101,61 @@
     });
   }
 
+  function register_service_worker() {
+    // Register service worker for PWA support
+    if ("serviceWorker" in navigator) {
+      let refreshing = false;
+
+      // Handle service worker updates
+      navigator.serviceWorker.addEventListener("controllerchange", () => {
+        if (!refreshing) {
+          refreshing = true;
+          window.location.reload();
+        }
+      });
+
+      // Listen for messages from service worker
+      navigator.serviceWorker.addEventListener("message", (event) => {
+        if (event.data.type === "SW_ACTIVATED") {
+          console.log("New version activated:", event.data.version);
+          const toast = new bootstrap.Toast(
+            document.getElementById("updateToast")
+          );
+          toast.show();
+        }
+      });
+
+      window.addEventListener("load", () => {
+        navigator.serviceWorker
+          .register("./sw.js")
+          .then((registration) => {
+            console.log("ServiceWorker registration successful");
+
+            // Check for updates
+            registration.addEventListener("updatefound", () => {
+              const newWorker = registration.installing;
+              newWorker.addEventListener("statechange", () => {
+                if (
+                  newWorker.state === "installed" &&
+                  navigator.serviceWorker.controller
+                ) {
+                  const toast = new bootstrap.Toast(
+                    document.getElementById("updateToast")
+                  );
+                  toast.show();
+                }
+              });
+            });
+          })
+          .catch((err) => {
+            console.log("ServiceWorker registration failed: ", err);
+          });
+      });
+    }
+  }
+
   $(document).ready(() => {
+    register_service_worker();
     setup_auto_save();
     restore_last_editing();
     sync_input_textarea_if_height_resize($("#left"), $("#right"));
